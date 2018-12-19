@@ -2,16 +2,24 @@
 open BFComp.Parser
 open BFComp.CodeGen
 
-open System
-
-let hello_world = "++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.+++."
-
 let private compile = 
     parseTokens 
     >> generateAST 
     >> generateCode
-
+    
+let private readFile (inp: string) = 
+    printf "Reading %s\n" inp
+    seq {
+    use sr = new System.IO.StreamReader(inp)
+    while not sr.EndOfStream do
+        yield sr.ReadLine()
+}
+        
 [<EntryPoint>]
 let main argv =
-    compile hello_world
-    0
+    if Array.length argv <> 1 then
+        printf "Invalid number of arguments."
+        -1
+    else
+        argv |> Array.item 0 |> readFile |> String.concat "" |> compile
+        0
