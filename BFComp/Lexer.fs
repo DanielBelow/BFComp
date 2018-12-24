@@ -7,9 +7,7 @@ type Token =
     | WhileBegin | WhileEnd
     | Noop
     
-    
-let private getToken lst tok =
-    (match tok with
+let private toToken = function 
     | '>' -> Inc_Ptr
     | '<' -> Dec_Ptr
     | '+' -> Inc_Val
@@ -18,9 +16,6 @@ let private getToken lst tok =
     | ',' -> GetChar
     | '[' -> WhileBegin
     | ']' -> WhileEnd
-    | _ -> Noop) :: lst
+    | _ -> Noop
     
-let parseTokens inp = 
-    let res = inp |> Seq.fold (getToken) [] |> Seq.rev |> Seq.toList
-    // printf "Lexed: %A\n" res
-    res
+let parseTokens inp = Seq.map (toToken) inp |> Seq.toList

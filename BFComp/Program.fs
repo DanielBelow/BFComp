@@ -2,12 +2,13 @@
 open BFComp.Parser
 open BFComp.CodeGen
 
-let private compile = 
+let private compile file = 
     parseTokens 
     >> generateAST 
-    >> generateCode
+    >> generateCode file
     
-let private readFile (inp: string) = 
+let private readFile (inp: string) =
+    let inp = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), inp)
     printf "Reading %s\n" inp
     seq {
     use sr = new System.IO.StreamReader(inp)
@@ -21,5 +22,6 @@ let main argv =
         printf "Invalid number of arguments."
         -1
     else
-        argv |> Array.item 0 |> readFile |> String.concat "" |> compile
+        let inputFile = argv |> Array.item 0
+        inputFile |> readFile |> String.concat "" |> compile inputFile
         0
