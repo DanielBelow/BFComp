@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="fizzbuzz.bf" />
       <Content Include="hello_world.bf" />
     </ItemGroup>
 
